@@ -51,34 +51,27 @@ int main() {
     }
 
     // OurEx1 - Task1
-    std::cout << "\n--- Task 1: Replace second last with max absolute ---" << std::endl;
-    OurEx1 ex1(std::make_unique<RandomGenerator>(-15, 15)); // Копируем генератор
+    std::cout << "\n--- OurEx1: Task1 ---" << std::endl;
+    OurEx1 ex1(std::make_unique<RandomGenerator>(-15, 15));
     ex1.fill(size);
-    std::cout << "Before Task1: " << ex1.data() << std::endl;
-    ex1.Task1();
-    std::cout << "After Task1: " << ex1.data() << std::endl;
+    std::cout << "Before Task: " << ex1.data() << std::endl;
+    ex1.Task();
+    std::cout << "After Task: " << ex1.data() << std::endl;
 
     // OurEx2 - Task2
-    std::cout << "\n--- Task 2: Insert K before/after elements ending with K ---" << std::endl;
-    OurEx2 ex2(std::make_unique<RandomGenerator>(-15, 15)); // Копируем генератор
+    std::cout << "\n--- OurEx2: Task2 ---" << std::endl;
+    OurEx2 ex2(std::make_unique<RandomGenerator>(-15, 15));
     ex2.fill(size);
-    
-    int K;
-    std::cout << "Enter K value: ";
-    std::cin >> K;
-    
-    std::cout << "Before Task2: " << ex2.data() << std::endl;
-    ex2.Task2(K);
-    std::cout << "After Task2: " << ex2.data() << std::endl;
+    std::cout << "Before Task: " << ex2.data() << std::endl;
+    ex2.Task();
+    std::cout << "After Task: " << ex2.data() << std::endl;
 
     // OurEx3 - Task3
-    std::cout << "\n--- Task 3: Create new array by formula ---" << std::endl;
-    OurEx3 ex3(std::make_unique<RandomGenerator>(-15, 15)); // Копируем генератор
+    std::cout << "\n--- OurEx3: Task3 ---" << std::endl;
+    OurEx3 ex3(std::make_unique<RandomGenerator>(-15, 15));
     ex3.fill(size);
-    
-    std::cout << "Original array: " << ex3.data() << std::endl;
-    Matrix<int> result = ex3.Task3();
-    std::cout << "Result array A: " << result << std::endl;
+    std::cout << "Before Task: " << ex3.data() << std::endl;
+    ex3.Task();
 
     std::cout << "\nAll tasks completed!" << std::endl;
     return 0;
