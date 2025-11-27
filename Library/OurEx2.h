@@ -1,18 +1,18 @@
 #pragma once
 #include "Exercise.h"
 
-// --- Используем старый синтаксис namespace ---
 namespace miit {
 namespace algebra {
 
-class OurEx2 : public Exercise { // Наследует от Exercise
+class OurEx2 : public Exercise {
 public:
-    using Exercise::Exercise; // Наследуем конструктор Exercise
+    using Exercise::Exercise;
 
-    // --- Исправлены сигнатуры методов для совпадения с Exercise.h ---
-    void Task1() override; // Должен совпадать
-    void Task2(int K) override; // Должен совпадать
-    Matrix<int> Task3() const override; // <--- Важно: Matrix<int>, а не Matrix
+    void Task2(int K) override; // Только Task2
+    
+    // Пустые реализации для остальных задач
+    void Task1() override {}
+    Matrix<int> Task3() const override { return Matrix<int>{}; }
 };
 
 } // namespace algebra
