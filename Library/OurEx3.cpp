@@ -1,11 +1,11 @@
 #include "OurEx3.h"
 #include <cmath>
-#include <iostream> // Добавлено
+#include <iostream>
 
 namespace miit {
 namespace algebra {
 
-Matrix<int> OurEx3::Task3() const {
+void OurEx3::Task() {
     Matrix<int> A;
 
     std::cout << "Creating new array by formula:" << std::endl;
@@ -32,7 +32,7 @@ Matrix<int> OurEx3::Task3() const {
         A << result;
     }
 
-    return A;
+    std::cout << "Result array A: " << A << std::endl;
 }
 
 } // namespace algebra
