@@ -1,11 +1,11 @@
 #include "OurEx1.h"
 #include <cmath>
-#include <iostream> // Добавлено
+#include <iostream>
 
 namespace miit {
 namespace algebra {
 
-void OurEx1::Task1() {
+void OurEx1::Task() {
     if (data_.size() < 2) {
         std::cout << "Array too small for Task1 (need at least 2 elements)" << std::endl;
         return;
