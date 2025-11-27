@@ -17,7 +17,6 @@ public:
 
     void fill(std::size_t n);
     
-    // ОДИН виртуальный метод Task()
     virtual void Task() = 0;
 
     const Matrix<int>& data() const noexcept { return data_; }
