@@ -1,30 +1,31 @@
-#include "OurEx1.h"
+#include "OurEx2.h"
 #include <cmath>
 #include <iostream>
 
 namespace miit {
 namespace algebra {
 
-void OurEx1::Task() {
-    if (data_.size() < 2) {
-        std::cout << "Array too small for Task1 (need at least 2 elements)" << std::endl;
-        return;
-    }
+void OurEx2::Task() {
+    int K;
+    std::cout << "Enter K value for Task2: ";
+    std::cin >> K;
     
-    int max_abs_value = data_[0];
-    std::size_t max_abs_index = 0;
+    int target_digit = std::abs(K) % 10;
+    int insertions = 0;
 
-    // Находим максимальный по модулю элемент
-    for (std::size_t i = 1; i < data_.size(); ++i) {
-        if (std::abs(data_[i]) > std::abs(max_abs_value)) {
-            max_abs_value = data_[i];
-            max_abs_index = i;
+    // Проходим массив с конца чтобы не сломать индексы при вставке
+    for (std::size_t i = data_.size(); i-- > 0; ) {
+        int current_value = data_[i];
+        int last_digit = std::abs(current_value) % 10;
+
+        if (last_digit == target_digit) {
+            data_.insert(i + 1, K); // Вставляем ПОСЛЕ
+            data_.insert(i, K);     // Вставляем ДО
+            insertions += 2;
         }
     }
 
-    // Заменяем предпоследний элемент
-    data_[data_.size() - 2] = max_abs_value;
-    std::cout << "Replaced second last element with max absolute value: " << max_abs_value << std::endl;
+    std::cout << "Inserted " << insertions << " elements with value " << K << std::endl;
 }
 
 } // namespace algebra
