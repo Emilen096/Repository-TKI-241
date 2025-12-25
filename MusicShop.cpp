@@ -1,52 +1,86 @@
-#pragma once
-#include "MusicItem.h"
-#include "Song.h"
-#include "Album.h"
-#include <vector>
-#include <memory>
-#include <string>
+#include "MusicShop.h"
+#include <iostream>
 #include <algorithm>
 
-// Класс-контейнер для управления музыкальной коллекцией
-class MusicShop {
-private:
-    std::vector<std::shared_ptr<MusicItem>> catalog;
+void MusicShop::addItem(const std::shared_ptr<MusicItem>& item) {
+    catalog.push_back(item);
+}
+
+std::vector<std::shared_ptr<MusicItem>> MusicShop::getItemsByArtist(const std::string& artist) const {
+    std::vector<std::shared_ptr<MusicItem>> result;
+    for (const auto& item : catalog) {
+        if (item->getArtist() == artist) {
+            result.push_back(item);
+        }
+    }
+    return result;
+}
+
+std::string MusicShop::getItemLocation(const std::string& title) const {
+    for (const auto& item : catalog) {
+        if (item->getTitle() == title) {
+            return item->getLocation();
+        }
+    }
+    return "Произведение не найдено";
+}
+
+std::vector<MediaFormat> MusicShop::getFormatsByTitle(const std::string& title) const {
+    std::vector<MediaFormat> formats;
+    for (const auto& item : catalog) {
+        if (item->getTitle() == title) {
+            formats.push_back(item->getFormat());
+        }
+    }
+    return formats;
+}
+
+std::vector<std::shared_ptr<MusicItem>> MusicShop::getItemsByGenre(Genre genre) const {
+    std::vector<std::shared_ptr<MusicItem>> result;
+    for (const auto& item : catalog) {
+        if (item->getGenre() == genre) {
+            result.push_back(item);
+        }
+    }
+    return result;
+}
+
+std::vector<std::shared_ptr<MusicItem>> MusicShop::findItems(
+    const std::string& title, int year, const std::string& album) const {
     
-public:
-    // Добавление произведения в каталог
-    void addItem(std::shared_ptr<MusicItem> item);
+    std::vector<std::shared_ptr<MusicItem>> result;
     
-    // Получение всей коллекции
-    const std::vector<std::shared_ptr<MusicItem>>& getCatalog() const;
+    for (const auto& item : catalog) {
+        bool matches = true;
+        
+        if (!title.empty() && item->getTitle() != title) matches = false;
+        if (year != 0 && item->getYear() != year) matches = false;
+        if (!album.empty() && item->getAlbum() != album) matches = false;
+        
+        if (matches) {
+            result.push_back(item);
+        }
+    }
+    return result;
+}
+
+std::vector<std::shared_ptr<MusicItem>> MusicShop::getItemsByArtistAndYears(
+    const std::string& artist, int startYear, int endYear) const {
     
-    // 1. Показать все произведения данного исполнителя
-    std::vector<std::shared_ptr<MusicItem>> getByArtist(const std::string& artist) const;
-    
-    // 2. Показать местоположение выбранного произведения
-    std::string getLocation(const std::string& title) const;
-    
-    // 3. Показать список носителей для выбранного произведения
-    std::vector<std::string> getFormats(const std::string& title) const;
-    
-    // 4. Показать список произведений по жанру
-    std::vector<std::shared_ptr<MusicItem>> getByGenre(Genre genre) const;
-    
-    // 5. Найти произведение по названию
-    std::vector<std::shared_ptr<MusicItem>> findByTitle(const std::string& title) const;
-    
-    // 5. Найти произведение по году выпуска
-    std::vector<std::shared_ptr<MusicItem>> findByYear(int year) const;
-    
-    // 5. Найти произведение по альбому
-    std::vector<std::shared_ptr<MusicItem>> findByAlbum(const std::string& album) const;
-    
-    // 6. Показать список произведений исполнителя по выбранным годам
-    std::vector<std::shared_ptr<MusicItem>> getByArtistAndYears(const std::string& artist, 
-                                                                int startYear, int endYear) const;
-    
-    // Универсальный поиск по нескольким критериям
-    std::vector<std::shared_ptr<MusicItem>> search(const std::string& keyword) const;
-    
-    // Получение размера каталога
-    size_t size() const { return catalog.size(); }
-};
+    std::vector<std::shared_ptr<MusicItem>> result;
+    for (const auto& item : catalog) {
+        if (item->getArtist() == artist && 
+            item->getYear() >= startYear && 
+            item->getYear() <= endYear) {
+            result.push_back(item);
+        }
+    }
+    return result;
+}
+
+void MusicShop::displayCatalog() const {
+    std::cout << "=== КАТАЛОГ МУЗЫКАЛЬНОГО МАГАЗИНА ===\n";
+    for (const auto& item : catalog) {
+        std::cout << item->toString() << "------------------------\n";
+    }
+}
