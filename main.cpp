@@ -1,68 +1,77 @@
-#include <iostream>
-#include <string>
-
-// Включаем все заголовки
-#include "MusicItem.h"
-#include "Song.h"
-#include "Album.h"
 #include "MusicShop.h"
+#include <iostream>
+#include <memory>
 
 int main() {
-    std::cout << "Starting Music Store Program...\n";
-    
     MusicShop shop;
     
-    // Простые тестовые данные
-    MediaFormat formats1[] = {FORMAT_CD, FORMAT_DIGITAL};
-    MediaFormat formats2[] = {FORMAT_VINYL, FORMAT_DIGITAL};
+    // Добавляем тестовые данные
+    shop.addItem(std::make_shared<MusicItem>("Bohemian Rhapsody", "Queen", 
+        1975, Genre::ROCK, "A Night at the Opera", MediaFormat::VINYL, 
+        29.99, "Стеллаж A, Полка 3"));
     
-    // Создаем пару песен
-    Song* song1 = new Song(
-        "Test Song 1",
-        "Test Artist",
-        2020,
-        GENRE_ROCK,
-        "Test Album",
-        formats1, 2,
-        "Shelf A, Box 1",
-        3.5,
-        "Test Writer"
-    );
-    shop.addItem(song1);
+    shop.addItem(std::make_shared<MusicItem>("Hotel California", "Eagles", 
+        1976, Genre::ROCK, "Hotel California", MediaFormat::CD, 
+        19.99, "Стеллаж B, Полка 1"));
     
-    Song* song2 = new Song(
-        "Test Song 2", 
-        "Test Artist",
-        2021,
-        GENRE_POP,
-        "Test Album 2",
-        formats2, 2,
-        "Shelf B, Box 2",
-        4.0,
-        "Test Writer 2"
-    );
-    shop.addItem(song2);
+    shop.addItem(std::make_shared<MusicItem>("Imagine", "John Lennon", 
+        1971, Genre::POP, "Imagine", MediaFormat::CASSETTE, 
+        14.99, "Стеллаж C, Полка 2"));
     
-    // Выводим информацию
-    std::cout << "\n=== All Items ===\n";
-    for (int i = 0; i < shop.getSize(); i++) {
-        MusicItem* item = shop.getCatalog()[i];
-        std::cout << item->getInfo() << "\n\n";
+    shop.addItem(std::make_shared<MusicItem>("Thriller", "Michael Jackson", 
+        1982, Genre::POP, "Thriller", MediaFormat::CD, 
+        24.99, "Стеллаж A, Полка 1"));
+    
+    shop.addItem(std::make_shared<MusicItem>("Billie Jean", "Michael Jackson", 
+        1982, Genre::POP, "Thriller", MediaFormat::VINYL, 
+        34.99, "Стеллаж A, Полка 2"));
+    
+    // Тестируем все функции по заданию
+    
+    std::cout << "=== ТЕСТИРОВАНИЕ ВСЕХ ФУНКЦИЙ ===\n\n";
+    
+    // 1. Произведения исполнителя
+    std::cout << "1. Все произведения Michael Jackson:\n";
+    auto jacksonSongs = shop.getItemsByArtist("Michael Jackson");
+    for (const auto& song : jacksonSongs) {
+        std::cout << " - " << song->getTitle() << " (" << song->getYear() << ")\n";
     }
     
-    // Тест поиска по исполнителю
-    std::cout << "\n=== Search by Artist ===\n";
-    int resultCount = 0;
-    MusicItem** results = shop.getByArtist("Test Artist", resultCount);
-    for (int i = 0; i < resultCount; i++) {
-        std::cout << "Found: " << results[i]->getTitle() << "\n";
+    // 2. Местоположение
+    std::cout << "\n2. Местоположение 'Hotel California':\n";
+    std::cout << "   " << shop.getItemLocation("Hotel California") << "\n";
+    
+    // 3. Список носителей для произведения
+    std::cout << "\n3. Носители для 'Thriller':\n";
+    auto formats = shop.getFormatsByTitle("Thriller");
+    for (const auto& format : formats) {
+        std::cout << "   - " << static_cast<int>(format) << "\n";
     }
-    delete[] results;
     
-    // Тест местоположения
-    std::cout << "\n=== Location Test ===\n";
-    std::cout << "Location: " << shop.getLocation("Test Song 1") << "\n";
+    // 4. Произведения по жанру
+    std::cout << "\n4. Все произведения в жанре ROCK:\n";
+    auto rockSongs = shop.getItemsByGenre(Genre::ROCK);
+    for (const auto& song : rockSongs) {
+        std::cout << "   - " << song->getTitle() << " by " << song->getArtist() << "\n";
+    }
     
-    std::cout << "\n=== Program Completed ===\n";
+    // 5. Поиск по критериям
+    std::cout << "\n5. Поиск произведений 1982 года:\n";
+    auto search1982 = shop.findItems("", 1982, "");
+    for (const auto& song : search1982) {
+        std::cout << "   - " << song->getTitle() << "\n";
+    }
+    
+    // 6. Произведения исполнителя за период
+    std::cout << "\n6. Произведения Queen за 1970-1980 гг:\n";
+    auto queen70s = shop.getItemsByArtistAndYears("Queen", 1970, 1980);
+    for (const auto& song : queen70s) {
+        std::cout << "   - " << song->getTitle() << " (" << song->getYear() << ")\n";
+    }
+    
+    // Весь каталог
+    std::cout << "\n=== ПОЛНЫЙ КАТАЛОГ ===\n";
+    shop.displayCatalog();
+    
     return 0;
 }
