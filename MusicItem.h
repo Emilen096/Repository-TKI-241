@@ -1,23 +1,9 @@
-#ifndef MUSICITEM_H
-#define MUSICITEM_H
-
+#pragma once
 #include <string>
+#include <memory>
 
-// Простые перечисления
-enum Genre {
-    GENRE_ROCK = 0,
-    GENRE_POP,
-    GENRE_CLASSICAL,
-    GENRE_JAZZ,
-    GENRE_HIPHOP
-};
-
-enum MediaFormat {
-    FORMAT_CD = 0,
-    FORMAT_VINYL,
-    FORMAT_CASSETTE,
-    FORMAT_DIGITAL
-};
+enum class Genre { ROCK, POP, JAZZ, CLASSICAL, HIPHOP, ELECTRONIC };
+enum class MediaFormat { CD, VINYL, CASSETTE, DIGITAL };
 
 class MusicItem {
 protected:
@@ -26,31 +12,27 @@ protected:
     int year;
     Genre genre;
     std::string album;
-    MediaFormat* formats;
-    int formatsCount;
-    std::string location;
-
+    MediaFormat format;
+    double price;
+    std::string location;  // местоположение в магазине
+    
 public:
-    MusicItem(const std::string& title, const std::string& artist, int year,
-              Genre genre, const std::string& album,
-              MediaFormat* formats, int formatsCount,
-              const std::string& location);
-    virtual ~MusicItem();
-
+    MusicItem(const std::string& title, const std::string& artist, 
+              int year, Genre genre, const std::string& album,
+              MediaFormat format, double price, const std::string& location);
+    
+    virtual ~MusicItem() = default;
+    
+    // Геттеры
     std::string getTitle() const { return title; }
     std::string getArtist() const { return artist; }
     int getYear() const { return year; }
     Genre getGenre() const { return genre; }
     std::string getAlbum() const { return album; }
-    MediaFormat* getFormats() const { return formats; }
-    int getFormatsCount() const { return formatsCount; }
+    MediaFormat getFormat() const { return format; }
+    double getPrice() const { return price; }
     std::string getLocation() const { return location; }
-
-    virtual std::string getInfo() const = 0;
-
-    static std::string genreToString(Genre g);
-    static std::string formatToString(MediaFormat f);
-    bool hasFormat(MediaFormat format) const;
+    
+    // Виртуальный метод для вывода информации
+    virtual std::string toString() const;
 };
-
-#endif
